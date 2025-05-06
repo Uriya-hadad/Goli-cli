@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>goli CLI Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 1px solid #34495e;
+            margin-bottom: 20px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            margin: 4px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        .static-nav-item {
+            padding: 12px 15px;
+            margin: 4px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            color: #bdc3c7;
+            text-align: center  ;
+            display: block;
+        }
+
+        .sub-nav-item {
+            padding: 8px 15px 8px 30px;
+            margin: 2px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            color: #ffffff;
+            display: block;
+            font-size: 0.9em;
+        }
+
+        .nav-item:hover, .sub-nav-item:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        .nav-item.active, .sub-nav-item.active {
+            background: #3498db;
+            color: white;
+        }
+
+        /* Main Content Styles */
+        .main-wrapper {
+            margin-left: 250px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #0078d4;
+            color: #fff;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-buttons a {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            color: #fff;
+            background: #0078d4;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .download-buttons a:hover {
+            background: #005fa3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            color: #fff;
+            width: 100%;
+        }
+
+        footer a {
+            color: #0078d4;
+            text-decoration: none;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode header {
+            background-color: #1a73e8;
+        }
+
+        body.dark-mode code {
+            background-color: #1a73e8;
+        }
+
+        body.dark-mode section {
+            background: #333;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-mode .download-buttons a {
+            background: #1a73e8;
+        }
+
+        body.dark-mode .download-buttons a:hover {
+            background: #0c58c0;
+        }
+
+        body.dark-mode footer {
+            background: #1a1a1a;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0078d4;
+            color: #fff;
+            font-size: 2rem;
+            border: none;
+            border-radius: 50%;
+            padding: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        .dark-mode-toggle:hover {
+            background: #005fa3;
+            transform: scale(1.1);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            background: #1a73e8;
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background: #0c58c0;
+        }
+
+        p {
+            /*color: #34495E;*/
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 40px;
+        }
+
+        ul {
+            /*color: #34495E;*/
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            font-family: monospace;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu</h2>
+        </div>
+        <div class="nav-menu">
+            <a href="#about" class="nav-item" data-section="about">About</a>
+            <hr>
+
+            <a href="#documentation" class="static-nav-item" data-section="documentation">Documentation</a>
+
+            <a href="#applications" class="nav-item" data-section="applications">Applications</a>
+            <a href="#change-env" class="sub-nav-item" data-section="change-env">change-env</a>
+            <a href="#create-env" class="sub-nav-item" data-section="create-env">create-env</a>
+            <a href="#enable-ssh" class="sub-nav-item" data-section="enable-ssh">enable-ssh</a>
+            <a href="#envs" class="sub-nav-item" data-section="envs">envs</a>
+            <a href="#logs" class="sub-nav-item" data-section="logs">logs</a>
+            <a href="#manipulate-instances" class="sub-nav-item" data-section="manipulate-instances">manipulate-instances</a>
+            <a href="#postgres" class="sub-nav-item" data-section="postgres">postgres</a>
+            <a href="#redis" class="sub-nav-item" data-section="redis">redis</a>
+            <a href="#restage" class="sub-nav-item" data-section="restage">restage</a>
+            <a href="#restart" class="sub-nav-item" data-section="restart">restart</a>
+            <a href="#show-bound-instances" class="sub-nav-item" data-section="show-bound-instances">show-bound-instances</a>
+
+            <a href="#instances" class="nav-item" data-section="instances">Instances</a>
+            <a href="#capabilities" class="sub-nav-item" data-section="capabilities">capabilities</a>
+            <a href="#create-key" class="sub-nav-item" data-section="create-key">create-key</a>
+            <a href="#generate-client-token" class="sub-nav-item" data-section="generate-client-token">generate-client-token</a>
+            <a href="#show-bound-apps" class="sub-nav-item" data-section="show-bound-apps">show-bound-apps</a>
+            <a href="#show-credentials" class="sub-nav-item" data-section="show-credentials">show-credentials</a>
+            <a href="#unbind" class="sub-nav-item" data-section="unbind">unbind</a>
+
+            <a href="#team-features" class="nav-item" data-section="team-features">team-features</a>
+            <a href="#connect-to-db" class="sub-nav-item" data-section="connect-to-db">connect-to-db</a>
+            <a href="#run-query" class="sub-nav-item" data-section="run-query">run-query</a>
+
+            <a href="#change-target" class="nav-item" data-section="change-target">change-target</a>
+            <hr>
+            <a href="#resources" class="static-nav-item" data-section="CLI-Setup">CLI resources</a>
+            <a href="#download" class="nav-item" data-section="download">Download</a>
+            <a href="#completion" class="nav-item" data-section="completion">Completion</a>
+        </div>
+
+    </nav>
+
+    <div class="main-wrapper">
+        <header id="home">
+            <h1>goli CLI</h1>
+            <p>Your guide to managing applications and instances in Cloud Foundry.</p>
+        </header>
+
+        <main>
+            <section id="about" class="section">
+                <h2 style=" font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+                    About goli</h2>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    Welcome to <span style=" font-weight: bold;">goli</span> — a state-of-the-art Command
+                    Line Interface (CLI)
+                    that brings efficiency and power to managing applications and instances in Cloud Foundry
+                    environments.<br>
+                    Whether you’re an experienced DevOps engineer or just getting started, goli makes it easy to control
+                    your cloud resources
+                    with precision and confidence.
+                </p>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    goli offers a perfect blend of simplicity and advanced functionality.<br>Need to manage application
+                    environments?
+                    goli’s got you covered.<br> Need to configure service instances, manage SSH access, or troubleshoot
+                    application issues?
+                    With <span style="color: #E74C3C; font-weight: bold;">goli</span>, everything is just a line
+                    away.<br>
+                    It supports direct execution for those who know exactly what they need, while also offering an
+                    intuitive, interactive mode
+                    to guide you through each step — no command memorization required.
+                </p>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    Imagine having the ability to change environments, restart applications, manage your databases with
+                    SSH tunnels,
+                    and explore service instance capabilities — all within seconds.<br> With goli, you gain full control
+                    over your cloud infrastructure,
+                    saving time and eliminating unnecessary complexity.
+                </p>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    But goli isn’t just for power users.<br>It’s designed to be accessible for all levels of experience.<br>
+                    With its clear command structure and user-friendly interactive mode, goli invites you to explore its
+                    capabilities
+                    at your own pace.
+                </p>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    Get ready to work smarter, not harder.<br>With goli at your fingertips, you’ll not only save time
+                    but also streamline your workflows,
+                    increase productivity, and keep everything running smoothly.<br><br>
+                    Welcome to the future of cloud management — welcome to goli!
+                </p>
+
+                <h3 style=" font-size: 24px; font-weight: bold; margin-top: 40px;">Ready to get
+                    started?</h3>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    <a href="#download" style=" text-decoration: none; font-weight: bold;">Download goli
+                        now</a> and start simplifying your Cloud Foundry management today!
+                </p>
+                <h3 style=" font-size: 24px; font-weight: bold; margin-top: 40px;">Enhanced User
+                    Experience with CLI Completion</h3>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    We’re excited to announce that goli supports full command-line completion for <strong>Zsh</strong>,
+                    making it even easier to use
+                    and navigate through the tool.<br>With Zsh completion, you’ll get suggestions for commands,
+                    subcommands, and parameters
+                    as you type, improving your workflow and saving time.
+                </p>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    Looking ahead, we’re also working on adding support for <strong>PowerShell</strong> completion, so
+                    no matter which shell you prefer,
+                    goli will have you covered.
+                </p>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    Ready to get started with completion? You can download the completion files for Zsh now and stay
+                    tuned for the upcoming PowerShell release.<br>
+                    <a href="#completion" style=" text-decoration: none; font-weight: bold;">Click here
+                        to download the completion files.</a>
+                </p>
+            </section>
+            <hr style="border: 0; height: 2px; background: #2980B9; margin: 40px 0;">
+            <section id="documentation" class="section">
+                <h2 style=" font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+                    Documentation Overview</h2>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    Welcome to the official <span
+                        style=" font-weight: bold;">goli CLI Documentation</span> — your go-to resource
+                    for everything you need to know about goli and its functionality.
+                    This documentation is intended to help you get started with using goli, from simple to advanced
+                    usage.
+                </p>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    Whether you are a new user or an experienced developer, this guide will provide you with detailed
+                    explanations of each feature, commands,
+                    subcommands, and advanced capabilities of the goli CLI tool.<br>We’ve also included practical
+                    examples and use cases to ensure you can quickly
+                    integrate goli into your workflow.
+                </p>
+                <p style=" font-size: 18px; line-height: 1.6; text-align: justify;">
+                    From this point onward, the following sections will delve into the specifics of goli’s structure,
+                    command usage,
+                    configuration settings, and other important documentation to help you master goli and make the most
+                    out of its features.
+                </p>
+            </section>
+
+
+            <section id="applications" class="section">
+                <h2>Applications</h2>
+
+                <pre>
+NAME
+       goli applications - Manage Cloud Foundry applications
+
+SYNOPSIS
+       goli applications [OPTIONS] [APPLICATION_NAME]
+       goli a [OPTIONS] [APPLICATION_NAME]
+
+DESCRIPTION
+       The goli applications command, or its alias goli a, is used to manage Cloud Foundry
+       applications.
+       It allows listing applications, retrieving details, modifying environment variables,
+       managing instances, and performing actions such as restarting, restaging, or enabling SSH access.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+ARGUMENTS
+       APPLICATION_NAME
+              The name of the specific application to perform actions on. This argument
+              is required when managing a particular application.
+              If not specified, the command lists all applications in the current space.
+
+ACTIONS
+       The goli applications command supports several actions for managing applications:
+
+       <a href="#change-env">change-env</a>
+              Modify the environment variables of the application.
+
+       <a href="#create-env">create-env</a>
+              Add a new environment variable to the application.
+
+       <a href="#details">details</a>
+              Display the current details and health of an application.
+
+       <a href="#enable-ssh">enable-ssh</a>
+              Enable SSH access for the application.
+
+       <a href="#envs">envs</a>
+              View the environment variables of the application.
+
+       <a href="#logs">logs</a>
+              View the logs of the application.
+
+       <a href="#manipulate-instances">manipulate-instances</a>
+              Perform actions on the application instances.
+
+       <a href="#postgres">postgres</a>
+              Create an SSH tunnel to the PostgreSQL instance bound to the application.
+
+       <a href="#redis">redis</a>
+              Create an SSH tunnel to the Redis instance bound to the application.
+
+       <a href="#restage">restage</a>
+              Restage the application to apply any configuration changes.
+
+       <a href="#restart">restart</a>
+              Restart the application.
+
+       <a href="#show-bound-instances">show-bound-instances</a>
+              Display the instances currently bound to the application.
+
+INTERACTIVE MODE
+       The goli applications command also supports an interactive mode.
+       When run without a specific application name or action, the command provides a menu
+       of available options for selection.
+
+EXAMPLES
+       List all applications in the current Cloud Foundry space:
+              goli applications
+
+       Target a specific application and perform actions:
+              goli applications my-app
+
+       View logs for a specific application:
+              goli applications logs my-app
+
+       View details and health status of an application:
+              goli applications details my-app
+
+       Add an environment variable to an application:
+              goli applications create-env my-app --name NEW_VAR --value new-value
+
+       Restart a specific application:
+              goli applications restart my-app
+
+SEE ALSO
+       <a href="#change-env">change-env</a>, <a href="#create-env">create-env</a>, <a href="#details">details</a>,
+       <a href="#enable-ssh">enable-ssh</a>, <a href="#envs">envs</a>, <a href="#logs">logs</a>,
+       <a href="#manipulate-instances">manipulate-instances</a>, <a href="#postgres">postgres</a>,
+       <a href="#redis">redis</a>, <a href="#restage">restage</a>, <a href="#restart">restart</a>,
+       <a href="#show-bound-instances">show-bound-instances</a>
+    </pre>
+            </section>
+            <section id="change-env" class="section">
+                <h2>change-env</h2>
+
+                <pre>
+NAME
+       goli applications change-env - Modify an existing environment variable for an application
+
+SYNOPSIS
+       goli applications change-env APPLICATION_NAME [--name ENV_VAR_NAME] [--value ENV_VAR_VALUE]
+       goli a change-env APPLICATION_NAME [--name ENV_VAR_NAME] [--value ENV_VAR_VALUE]
+
+DESCRIPTION
+       The change-env command allows modifying the value of an existing environment 
+       variable for a specified application.
+       If the environment variable does not exist, the command will fail.
+
+       If --name or --value is not specified, the command enters interactive mode, 
+       allowing the user to choose an environment variable and input a new value.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+       --name &lt;ENV_VAR_NAME&gt;
+              (Optional) The name of the environment variable to modify.
+              If not specified, the command enters interactive mode.
+
+       --value &lt;ENV_VAR_VALUE&gt;
+              (Optional) The new value of the environment variable.
+              If not specified, the command enters interactive mode.
+
+ARGUMENTS
+       APPLICATION_NAME
+              The name of the application whose environment variable should be modified.
+              This argument is required.
+
+EXAMPLES
+       Modify an environment variable with explicit name and value:
+              goli applications change-env my-app --name LOG_LEVEL --value debug
+
+       Run in interactive mode (select an environment variable and input a value):
+              goli applications change-env my-app
+
+SEE ALSO
+       <a href="#create-env">create-env</a>, <a href="#envs">envs</a>
+    </pre>
+            </section>
+            <section id="create-env" class="section">
+                <h2>create-env</h2>
+
+                <pre>
+NAME
+       goli applications create-env - Add a new environment variable to an application
+
+SYNOPSIS
+       goli applications create-env APPLICATION_NAME [--name ENV_VAR_NAME] [--value ENV_VAR_VALUE]
+       goli a create-env APPLICATION_NAME [--name ENV_VAR_NAME] [--value ENV_VAR_VALUE]
+
+DESCRIPTION
+       The create-env command allows adding a new environment variable to a specified application.
+       If the environment variable already exists, its value will be updated.
+
+       If --name or --value is not provided, the command enters interactive mode, prompting 
+       the user to input the environment variable name and its value.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+       --name &lt;ENV_VAR_NAME&gt;
+              (Optional) The name of the environment variable to create.
+              If not specified, the command enters interactive mode.
+
+       --value &lt;ENV_VAR_VALUE&gt;
+              (Optional) The value of the environment variable. If not specified, 
+              the command enters interactive mode.
+
+ARGUMENTS
+       APPLICATION_NAME
+              The name of the application to which the environment variable should be added.
+              This argument is required.
+
+EXAMPLES
+       Create an environment variable with explicit name and value:
+              goli applications create-env my-app --name FEATURE_FLAG --value "enabled"
+
+       Run in interactive mode (prompt for variable name and value):
+              goli applications create-env my-app
+
+SEE ALSO
+       <a href="#change-env">change-env</a>, <a href="#envs">envs</a>
+    </pre>
+            </section>
+            <section id="enable-ssh" class="section">
+                <h2>enable-ssh</h2>
+
+                <pre>
+NAME
+       goli applications enable-ssh - Enable SSH access for an application
+
+SYNOPSIS
+       goli applications enable-ssh APPLICATION_NAME
+       goli a enable-ssh APPLICATION_NAME
+
+DESCRIPTION
+       The enable-ssh command allows SSH access to a specified application.
+       This is useful for debugging or performing maintenance tasks inside
+       the application's container.
+
+       By default, SSH access is disabled for security reasons.
+       Running this command enables it, allowing authorized users to connect.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+EXAMPLES
+       Enable SSH access for an application:
+              goli applications enable-ssh my-app
+
+       Enable SSH access for an application using the alias:
+              goli a enable-ssh my-app
+
+SEE ALSO
+       <a href="#details">details</a>, <a href="#logs">logs</a>, <a href="#restart">restart</a>
+    </pre>
+            </section>
+            <section id="envs" class="section">
+                <h2>envs</h2>
+
+                <pre>
+NAME
+       goli applications envs - Display environment variables for an application
+
+SYNOPSIS
+       goli applications envs APPLICATION_NAME
+       goli a envs APPLICATION_NAME
+
+DESCRIPTION
+       The envs command retrieves and displays all environment variables
+       configured for a specified application.
+       This is useful for debugging, inspecting configurations, and ensuring that environment variables are
+       correctly set.
+
+       The output includes both system-defined and user-defined environment
+       variables.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+EXAMPLES
+       Show environment variables for an application:
+              goli applications envs my-app
+
+       Show environment variables using the alias:
+              goli a envs my-app
+
+SEE ALSO
+       <a href="#create-env">create-env</a>, <a href="#change-env">change-env</a>, <a href="#restart">restart</a>
+    </pre>
+            </section>
+            <section id="logs" class="section">
+                <h2>logs</h2>
+
+                <pre>
+NAME
+       goli applications logs - View logs for an application
+
+SYNOPSIS
+       goli applications logs APPLICATION_NAME
+       goli a logs APPLICATION_NAME
+
+DESCRIPTION
+       The logs command retrieves and displays real-time logs for a specified
+       application.
+       This is useful for debugging and monitoring application behavior.
+
+       The output includes system logs, error messages, and application-specific
+       logs and requests.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+EXAMPLES
+       View logs for an application:
+              goli applications logs my-app
+
+       View logs using the alias:
+              goli a logs my-app
+
+SEE ALSO
+       <a href="#restart">restart</a>, <a href="#details">details</a>, <a href="#envs">envs</a>
+    </pre>
+            </section>
+            <section id="manipulate-instances" class="section">
+                <h2>manipulate-instances</h2>
+
+                <pre>
+NAME
+       goli applications manipulate-instances - Perform actions on a bound instance of an application
+
+SYNOPSIS
+       goli applications manipulate-instances APPLICATION_NAME
+       goli a manipulate-instances APPLICATION_NAME
+
+DESCRIPTION
+       The manipulate-instances command lets you interact with and manage the
+       instances bound to a specific application.
+
+       Upon running the command, you will first be prompted to select a bound instance to work with,
+       and then you can choose from a list of available actions.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+EXAMPLES
+       Interactively choose a bound instance for "my-app" and perform actions:
+              goli applications manipulate-instances my-app
+
+       Use alias:
+              goli a manipulate-instances my-app
+
+SEE ALSO
+       <a href="#capabilities">capabilities</a>, <a href="#create-key">create-key</a>,
+       <a href="#generate-client-token">generate-client-token</a>, <a href="#show-bound-apps">show-bound-apps</a>,
+       <a href="#show-credentials">show-credentials</a>, <a href="#unbind">unbind</a>
+    </pre>
+            </section>
+            <section id="postgres" class="section">
+                <h2>postgres</h2>
+
+                <pre>
+NAME
+       goli applications postgres - Create an SSH tunnel to a PostgreSQL instance and open it in <a href="https://tableplus.com/">TablePlus</a>
+
+SYNOPSIS
+       goli applications postgres APPLICATION_NAME
+       goli a postgres APPLICATION_NAME
+
+DESCRIPTION
+       The postgres command establishes an SSH tunnel to a PostgreSQL database
+       bound to the specified application.
+       This allows direct access to the database for debugging, querying, or administrative tasks.
+
+       The tunnel is created using the application's SSH access, and the connection
+       details are printed upon success.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+EXAMPLES
+       Open an SSH tunnel to the PostgreSQL instance bound to "my-app":
+              goli applications postgres my-app
+
+       Use alias:
+              goli a postgres my-app
+
+SEE ALSO
+        <a href="#redis">redis</a>, <a href="#enable-ssh">enable-ssh</a>,
+        <a href="#show-bound-instances">show-bound-instances</a>, <a href="#connect-to-db">connect-to-db</a>,
+    </pre>
+            </section>
+            <section id="redis" class="section">
+                <h2>redis</h2>
+
+                <pre>
+NAME
+       goli applications redis - Create an SSH tunnel to a Redis bound instance and open it in <a href="https://tableplus.com/">TablePlus</a>
+
+SYNOPSIS
+       goli applications redis APPLICATION_NAME
+       goli a redis APPLICATION_NAME
+
+DESCRIPTION
+       The redis command creates an SSH tunnel to the Redis instance bound to a
+       specific application.
+       This tunnel allows for secure communication with the Redis service,
+       enabling remote interaction such as querying and managing data.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+EXAMPLES
+       Create an SSH tunnel to the Redis instance bound to "my-app":
+              goli applications redis my-app
+
+       Use alias:
+              goli a redis my-app
+
+SEE ALSO
+       <a href="#postgres">postgres</a>, <a href="#enable-ssh">enable-ssh</a>, <a href="#show-bound-instances">show-bound-instances</a>
+    </pre>
+            </section>
+            <section id="restage" class="section">
+                <h2>restage</h2>
+
+                <pre>
+NAME
+       goli applications restage - Restage a specified application
+
+SYNOPSIS
+       goli applications restage APPLICATION_NAME [OPTIONS]
+       goli a restage APPLICATION_NAME [OPTIONS]
+
+DESCRIPTION
+       The restage command is used to restage an application in Cloud Foundry.
+       Restaging an application means that it will be re-deployed without changing
+       the application's codebase.
+       It is particularly useful when environmental changes potentially alter
+       the application's runtime behavior, even though the application code itself remains unchanged.
+
+       This helps ensure that the application picks up any changes to its environment
+       without requiring a full redeployment.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+       -r, --rolling
+              Perform a rolling restage, restarting application instances incrementally.
+              This strategy ensures that some instances are kept running while others
+              are restaged, reducing downtime.
+
+EXAMPLES
+       Restage the "my-app" application:
+              goli applications restage my-app
+
+       Restage the "my-app" application with rolling restage:
+              goli applications restage my-app --rolling
+
+       Use alias:
+              goli a restage my-app
+
+       Use alias with rolling restage:
+              goli a restage my-app --rolling
+
+SEE ALSO
+       <a href="#restart">restart</a>
+    </pre>
+            </section>
+            <section id="restart" class="section">
+                <h2>restart</h2>
+
+                <pre>
+NAME
+       goli applications restart - Restart a specified application
+
+SYNOPSIS
+       goli applications restart APPLICATION_NAME [OPTIONS]
+       goli a restart APPLICATION_NAME [OPTIONS]
+
+DESCRIPTION
+       The restart command is used to restart an application in Cloud Foundry.
+
+       This can be useful if you need to reload the application's environment
+       variables, configuration, or other runtime settings.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+       -r, --rolling
+              Perform a rolling restart, restarting application instances incrementally.
+              This strategy ensures that some instances are kept running while others
+              are restarted, reducing downtime.
+
+EXAMPLES
+       Restart the "my-app" application:
+              goli applications restart my-app
+
+       Restart the "my-app" application with rolling restart:
+              goli applications restart my-app --rolling
+
+       Use alias:
+              goli a restart my-app
+
+       Use alias with rolling restart:
+              goli a restart my-app --rolling
+
+SEE ALSO
+       <a href="#restage">restage</a>
+    </pre>
+            </section>
+            <section id="show-bound-instances" class="section">
+                <h2>show-bound-instances</h2>
+
+                <pre>
+NAME
+       goli applications show-bound-instances - Display instances bound to the application
+
+SYNOPSIS
+       goli applications show-bound-instances APPLICATION_NAME
+       goli a show-bound-instances APPLICATION_NAME
+
+DESCRIPTION
+       The show-bound-instances command displays a list of instances that are bound
+       to the specified application.
+       These instances are typically services that the application is using,
+       such as databases or other external resources.
+
+       This command helps to easily view all the resources that are linked to your application.
+
+EXAMPLES
+       Display bound instances for the "my-app" application:
+              goli applications show-bound-instances my-app
+
+       Use alias:
+              goli a show-bound-instances my-app
+
+SEE ALSO
+       <a href="#change-env">change-env</a>, <a href="#create-env">create-env</a>,
+       <a href="#enable-ssh">enable-ssh</a>, <a href="#envs">envs</a>,
+       <a href="#manipulate-instances">manipulate-instances</a>, <a href="#restage">restage</a>,
+       <a href="#postgres">postgres</a>, <a href="#redis">redis</a>,
+    </pre>
+            </section>
+
+            <section id="instances" class="section">
+                <h2>Instances</h2>
+
+                <pre>
+NAME
+       goli instances - View or interact with service instances bound to applications
+
+SYNOPSIS
+       goli instances [OPTIONS] [INSTANCE_NAME]
+       goli i [OPTIONS] [INSTANCE_NAME]
+
+DESCRIPTION
+       The goli instances command, or its alias goli i, is used to interact with service instances
+       bound to applications.
+       It allows managing service instance credentials, generating keys, viewing capabilities,
+       and unbinding services from applications.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+ARGUMENTS
+       INSTANCE_NAME
+              The name of the specific service instance to perform actions on. This argument
+              is required when managing a particular instance.
+              If not specified, the command lists all service instances in the current space.
+
+ACTIONS
+       The goli instances command supports several actions for managing service instances:
+
+       <a href="#capabilities">capabilities</a>
+              View the capabilities exposed by the service instance.
+
+       <a href="#create-key">create-key</a>
+              Generate a new key for the service instance, enabling secure access.
+
+       <a href="#generate-client-token">generate-client-token</a>
+              Generate a client token for accessing the service instance.
+
+       <a href="#show-bound-apps">show-bound-apps</a>
+              List the applications currently bound to the service instance.
+
+       <a href="#show-credentials">show-credentials</a>
+              View the credentials for a specific service instance.
+
+       <a href="#unbind">unbind</a>
+              Unbind the service instance from a specific Cloud Foundry application.
+
+INTERACTIVE MODE
+       The goli instances command also supports an interactive mode.
+       When run without a specific instance name or action, the command provides a menu
+       of available options for selection.
+
+EXAMPLES
+       List all service instances in the current Cloud Foundry space:
+              goli instances
+
+       Target a specific service instance and perform actions:
+              goli instances my-db
+
+       View capabilities for a specific instance:
+              goli instances capabilities my-db
+
+       Generate a new key for a service instance:
+              goli instances create-key my-db
+
+       Generate a client token for a service instance:
+              goli instances generate-client-token my-db
+
+       View credentials for a service instance:
+              goli instances show-credentials my-db
+
+       Unbind a service instance from an application:
+              goli instances unbind my-db my-app
+
+SEE ALSO
+       <a href="#capabilities">capabilities</a>, <a href="#create-key">create-key</a>, <a href="#generate-client-token">generate-client-token</a>,
+       <a href="#show-bound-apps">show-bound-apps</a>, <a href="#show-credentials">show-credentials</a>,
+       <a href="#unbind">unbind</a>
+    </pre>
+            </section>
+            <section id="capabilities" class="section">
+                <h2>capabilities</h2>
+
+                <pre>
+NAME
+       goli instances capabilities - Explore API capabilities of a service instance
+
+SYNOPSIS
+       goli instances capabilities INSTANCE_NAME
+       goli i capabilities INSTANCE_NAME
+
+DESCRIPTION
+       The capabilities command allows you to explore the API capabilities of a service instance.
+
+       This can be useful for understanding the features and methods available for a service you are
+       interacting with, such as a feature-flag or a messaging service.
+
+EXAMPLES
+       Display capabilities for the "my-db" instance:
+              goli instances capabilities my-db
+
+       Use alias:
+              goli i capabilities my-db
+
+SEE ALSO
+       <a href="#create-key">create-key</a>, <a href="#generate-client-token">generate-client-token</a>,
+       <a href="#show-bound-apps">show-bound-apps</a>, <a href="#show-credentials">show-credentials</a>,
+       <a href="#unbind">unbind</a>
+    </pre>
+            </section>
+            <section id="create-key" class="section">
+                <h2>create-key</h2>
+
+                <pre>
+NAME
+       goli instances create-key - Generate a new service key for a service instance to enable secure external access
+
+SYNOPSIS
+       goli instances create-key INSTANCE_NAME
+       goli i create-key INSTANCE_NAME
+
+DESCRIPTION
+       The create-key command generates a new service key for a specific service instance.
+       This key is necessary for securely connecting to the instance externally.
+
+EXAMPLES
+       Generate a new service key for the "my-db" instance:
+              goli instances create-key my-db
+
+       Use alias:
+              goli i create-key my-db
+
+SEE ALSO
+       <a href="#capabilities">capabilities</a>, <a href="#generate-client-token">generate-client-token</a>,
+       <a href="#show-bound-apps">show-bound-apps</a>, <a href="#show-credentials">show-credentials</a>,
+       <a href="#unbind">unbind</a>
+    </pre>
+            </section>
+            <section id="generate-client-token" class="section">
+                <h2>generate-client-token</h2>
+
+                <pre>
+NAME
+       goli instances generate-client-token - Generate a client token for a service instance
+
+SYNOPSIS
+       goli instances generate-client-token INSTANCE_NAME
+       goli i gct INSTANCE_NAME
+
+DESCRIPTION
+       The generate-client-token command generates a client token that allows external applications
+       to securely authenticate with a service instance.
+
+       This token is typically used for API integrations or service-to-service communication.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+       -s, --subdomain
+              The subdomain to generate the token for.
+              If not specified, the token will be generated for the space subdomain.
+
+EXAMPLES
+       Generate a client token for the "my-db" instance:
+              goli instances generate-client-token my-db
+
+       Generate a client token for the "my-instance" instance with the subdomain "my-subdomain".
+              goli instances generate-client-token my-instance -s my-subdomain
+
+       Use alias:
+              goli i generate-client-token my-db
+
+SEE ALSO
+       <a href="#capabilities">capabilities</a>, <a href="#create-key">create-key</a>,
+       <a href="#show-bound-apps">show-bound-apps</a>,
+       <a href="#show-credentials">show-credentials</a>, <a href="#unbind">unbind</a>
+    </pre>
+            </section>
+            <section id="show-bound-apps" class="section">
+                <h2>show-bound-apps</h2>
+
+                <pre>
+NAME
+       goli instances show-bound-apps - List applications bound to a specific Cloud Foundry service instance
+
+SYNOPSIS
+       goli instances show-bound-apps INSTANCE_NAME
+       goli i show-bound-apps INSTANCE_NAME
+
+DESCRIPTION
+       The show-bound-apps command lists all applications that are bound to a particular service instance.
+       This is useful for determining which applications are leveraging the service.
+
+EXAMPLES
+       Show applications bound to the "my-db" instance:
+              goli instances show-bound-apps my-db
+
+       Use alias:
+              goli i show-bound-apps my-db
+
+SEE ALSO
+       <a href="#capabilities">capabilities</a>, <a href="#create-key">create-key</a>,
+       <a href="#generate-client-token">generate-client-token</a>,
+       <a href="#show-credentials">show-credentials</a>, <a href="#unbind">unbind</a>
+    </pre>
+            </section>
+            <section id="show-credentials" class="section">
+                <h2>show-credentials</h2>
+
+                <pre>
+NAME
+       goli instances show-credentials - Display credentials for a specific service instance
+
+SYNOPSIS
+       goli instances show-credentials INSTANCE_NAME
+       goli i show-credentials INSTANCE_NAME
+
+DESCRIPTION
+       The show-credentials command displays the credentials for a specific service instance,
+       such as access keys, passwords, and URLs.
+
+       This is essential for configuring applications to securely connect to the service.
+
+EXAMPLES
+       Display credentials for the "my-db" instance:
+              goli instances show-credentials my-db
+
+       Use alias:
+              goli i show-credentials my-db
+
+SEE ALSO
+       <a href="#capabilities">capabilities</a>, <a href="#create-key">create-key</a>,
+       <a href="#generate-client-token">generate-client-token</a>,
+       <a href="#show-bound-apps">show-bound-apps</a>, <a href="#unbind">unbind</a>
+    </pre>
+            </section>
+            <section id="unbind" class="section">
+                <h2>unbind</h2>
+
+                <pre>
+NAME
+       goli instances unbind - Unbind a service instance from a specific Cloud Foundry application
+
+SYNOPSIS
+       goli instances unbind INSTANCE_NAME APPLICATION_NAME
+       goli i unbind INSTANCE_NAME APPLICATION_NAME
+
+DESCRIPTION
+       The unbind command removes the binding between a service instance and an application,
+       effectively disconnecting the application from the service.
+
+EXAMPLES
+       Unbind the "my-db" service instance from the "my-app" application:
+              goli instances unbind my-db my-app
+
+       Use alias:
+              goli i unbind my-db my-app
+
+SEE ALSO
+       <a href="#capabilities">capabilities</a>, <a href="#create-key">create-key</a>,
+       <a href="#generate-client-token">generate-client-token</a>,
+       <a href="#show-bound-apps">show-bound-apps</a>, <a href="#show-credentials">show-credentials</a>
+    </pre>
+            </section>
+
+
+            <section id="team-features" class="section">
+                <h2>Team-Features</h2>
+
+                <pre>
+NAME
+       goli team-features - Role-specific features for advanced application and instance operations
+
+SYNOPSIS
+       goli team-features [OPTIONS] [FEATURE_NAME]
+       goli tf [OPTIONS] [FEATURE_NAME]
+
+DESCRIPTION
+       The goli team-features command, or its alias goli tf, provides advanced features specific to roles
+       within the organization for managing applications and instances.
+
+       This command allows users ith the appropriate permissions to access operations based on their roles.
+
+       **Note:** As this command is role-based, not all actions are covered in this documentation.
+       Only shared actions available to all roles are listed here.
+       To view more details about a specific sub-command, users can use the `--help` flag to access dedicated
+       documentation for that feature.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+ARGUMENTS
+       FEATURE_NAME
+              The name of the specific team feature to perform actions on.
+
+              This argument is required when managing a particular feature.
+              If not specified, the command lists all available features for the current role.
+
+ACTIONS
+       The goli team-features command currently supports the following shared action:
+
+       <a href="#connect-to-db">connect-to-db</a>
+              Automatically connect to a PostgreSQL database without specifying the app name.
+
+       <a href="#run-query">run-query</a>
+              Run a direct query on the database without needing to open or manually interact with the database.
+
+INTERACTIVE MODE
+       The goli team-features command also supports an interactive mode.
+       When run without a specific feature name or action, the command provides a menu
+       of available options for selection.
+
+EXAMPLES
+       List all available team features:
+              goli team-features
+
+       Automatically connect to a PostgreSQL database bound to an application:
+              goli team-features connect-to-db
+
+SEE ALSO
+       <a href="#connect-to-db">connect-to-db</a>
+
+    </pre>
+</section>
+
+            <section id="connect-to-db" class="section">
+                <h2>connect-to-db</h2>
+
+                <pre>
+NAME
+       goli team-features connect-to-db - Automatically connect to a PostgreSQL database bound to
+       an application and open it in <a href="https://tableplus.com/">TablePlus</a>
+
+SYNOPSIS
+       goli team-features connect-to-db [OPTIONS]
+       goli tf ctd [OPTIONS]
+
+DESCRIPTION
+       The goli connect-to-db command, or its alias goli ctd, simplifies the process of accessing
+       a PostgreSQL database bound to a Cloud Foundry application. It automatically detects the application
+       with a PostgreSQL binding and securely connects to it.
+
+OPTIONS
+       -d, --db &lt;db-name&gt;
+              The name of the database.
+              If not specified, the command will enter interactive mode to allow the user to select
+              from the available PostgreSQL databases.
+
+       -h, --help
+              Display this help message and exit.
+
+EXAMPLES
+       List all PostgreSQL databases and connect to the selected one:
+              goli team-features connect-to-db
+
+       Connect to a PostgreSQL database with the explicitly specified name:
+              goli team-features connect-to-db --db custom-db-name
+
+INTERACTIVE MODE
+       If the database name is not specified with the -d flag, the command will enter interactive mode
+       to allow the user to select from the available PostgreSQL databases bound to the application.
+
+SEE ALSO
+       <a href="#team-features">team-features</a>, <a href="#postgres">postgres</a>
+    </pre>
+            </section>
+            <section id="run-query" class="section">
+                <h2>run-query</h2>
+
+                <pre>
+NAME
+       goli run-query - Run a direct query on the database
+
+SYNOPSIS
+       goli team-features run-query [OPTIONS]
+       goli team-features query [OPTIONS]
+
+DESCRIPTION
+       The goli run-query command, or its alias goli query, allows you to run a direct SQL query on the database
+       without needing to open or manually interact with the database.
+       It executes SQL queries (SELECT queries only) directly from the CLI, enabling users to retrieve data in
+       the database.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+       -q, --query
+              The SQL query you wish to execute on the database.
+              If not specified, interactive mode will open to input the query.
+
+       -d, --db
+              The name of the database where the query will be executed.
+              If not specified, interactive mode will open to choose the database.
+
+       -f, --file
+              The name of the file to save the query result to.
+              If not specified, the query result will be displayed in the terminal.
+
+EXAMPLES
+       Execute the query "SELECT * FROM users" on the "my_database" database:
+              goli run-query -q "SELECT * FROM users" -d "my_database"
+
+       Execute the query "SELECT * FROM users" and save the result to the "users.csv" file:
+              goli run-query -q "SELECT * FROM users" -f "users.csv"
+
+       Open interactive mode to input the query and select the database:
+              goli run-query
+
+INTERACTIVE MODE
+       If the query or database is not specified, the command will enter interactive mode, allowing the user to
+       input the SQL query and select the database from the available options.
+
+SEE ALSO
+         <a href="#team-features">team-features</a>, <a href="#connect-to-db">connect-to-db</a>, <a href="#postgres">postgres</a>
+    </pre>
+            </section>
+
+
+            <section id="change-target" class="section">
+                <h2>change-target</h2>
+
+                <pre>
+NAME
+       goli change-target - Switch between different Cloud Foundry organizations or spaces
+
+SYNOPSIS
+       goli change-target [OPTIONS] TARGET
+       goli ct [OPTIONS] TARGET
+
+DESCRIPTION
+       The goli change-target command, or its alias goli ct, allows you to switch between different
+       Cloud Foundry organizations or spaces.
+       This is useful for managing resources across multiple environments within Cloud Foundry.
+
+OPTIONS
+       -h, --help
+              Display this help message and exit.
+
+       -o, --org &lt;org&gt;
+              (Optional) The Cloud Foundry organization to target.
+              If not specified, the command will ask the user to select an organization
+              from a list of available ones.
+
+       -s, --space &lt;space&gt;
+              (Optional) The Cloud Foundry space within the targeted organization.
+              If not specified, the command will ask the user to select a space from a
+              list of available ones.
+
+EXAMPLES
+       Switch to a specific organization and space:
+              goli change-target --org my-org --space my-space
+
+       Switch to a specific organization and prompt for space selection:
+              goli change-target --org my-org
+
+INTERACTIVE MODE
+       If no organization or space is specified, the command will enter interactive mode, allowing the user to
+       choose an organization and space from the available options.
+
+SEE ALSO
+       <a href="#applications">applications</a>, <a href="#instances">instances</a>
+    </pre>
+            </section>
+
+
+            <section id="resources" class="section">
+                <h2 style=" font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+                    Resources</h2>
+                <p style="font-size: 18px; line-height: 1.6; text-align: justify;">
+                    Welcome to the official <span style=" font-weight: bold;">goli CLI Resources</span> section — your one-stop shop
+                    for all the extra materials you need to enhance your experience with goli.<br> This section contains the essential
+                    resources, including CLI downloads, configuration files, and more.
+                </p>
+
+            </section>
+            <section class="section" id="download">
+                <h2 style=" font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+                    Download goli CLI</h2>
+                <div class="download-buttons" style="text-align: center; margin-bottom: 20px;">
+                    <a href="./mac" style="margin-right: 15px;">Download for macOS</a>
+                    <a href="./win">Download for Windows</a>
+                </div>
+                <p style="font-size: 16px;  text-align: center;">
+                    After downloading the appropriate version for your operating system, follow the setup instructions below:
+                </p>
+                <div class="setup-instructions" style="font-size: 16px; text-align: center;">
+                    <h3 style="font-size: 24px;  font-weight: bold;">Setup Instructions:</h3>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li><strong>macOS:</strong>
+                            <ul style="list-style-type: none; padding-left: 0;text-align: left">
+                                <li>After downloading the zip file, unzip it by double-clicking on the file or using the terminal with the <code>unzip</code> command.</li>
+                                <li>Open the terminal, navigate to the folder where the unzipped file is located, and run <code>chmod +x ./goli</code> to make the file executable.</li>
+                                <li><strong>NOTE: </strong>If you see a security warning that the file is damaged,<br> run the following command in the terminal: <code>xattr -c ./goli</code> to remove the extended attributes causing the issue.</li>
+                                <li><strong>NOTE: </strong>If macOS blocks the application due to security settings, go to <strong>System Settings</strong> &gt; <strong>Privacy & Security</strong>, scroll down, and click the <strong>Open Anyway</strong> button to confirm your intent to open or install the app.</li>
+                                <li>Once you've done that, you can run the CLI with <code>./goli</code> in the terminal.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Windows:</strong>
+                            <ul style="list-style-type: none; padding-left: 0;text-align: left">
+                                <li>After downloading the zip file, unzip it by right-clicking and selecting <strong>Extract All</strong>.</li>
+                                <li>Navigate to the extracted folder and open PowerShell.</li>
+                                <li>Run <code>Set-ExecutionPolicy RemoteSigned</code> to allow script execution.</li>
+                                <li>Run <code>.\goli.exe</code> to start the CLI.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p style="font-size: 16px;  margin-top: 15px;">
+                        For further assistance or troubleshooting, please refer to the <a href="#documentation" style="">documentation</a>.
+                    </p>
+                </div>
+            </section>
+            <section class="section" id="completion">
+                <h2 style=" font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+                    Download Completion Files</h2>
+                <div class="download-buttons" style="text-align: center; margin-bottom: 20px;">
+                    <a href="./goli-completion-mac" style="margin-right: 15px;">Download Completion for macOS</a>
+                    <a href="./goli-completion-win">Download Completion for Windows</a>
+                </div>
+                <p style="font-size: 16px;  text-align: center;">
+                    These completion files will help you set up auto-completion for the <strong>goli</strong> CLI in your terminal.
+                </p>
+                <div class="setup-instructions" style="font-size: 16px; text-align: center;">
+                    <h3 style="font-size: 24px;  font-weight: bold;">Setup Instructions:</h3>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li><strong>For macOS:</strong>
+                            <ul style="list-style-type: none; padding-left: 0;">
+                                <li>1. Move the file to the wanted directory.</li>
+                                <li>2. Open your <code>.zshrc</code> file and paste this in the file(make sure to replace #path# with the actual path): <b><br>autoload -U compinit; compinit<br>source "#path#"<br>compdef _goli goli</b>
+                                <li>3. You should now have auto-completion enabled for the <strong>goli</strong> CLI in your terminal.</li>
+                            </ul>
+                        </li>
+                        <li><strong>For Windows:</strong>
+                            <ul style="list-style-type: none; padding-left: 0;">
+                                <li>1. Move the file to the appropriate directory, for example: <code>C:\Program Files\goli</code>.</li>
+                                <li>2. Open PowerShell and run: <code>Set-ExecutionPolicy RemoteSigned</code> to allow script execution.</li>
+                                <li>3. Run: <code>source ~/.bash_profile</code> or <code>source ~/.zshrc</code> to apply the changes.</li>
+                                <li>4. You should now have auto-completion enabled for the <strong>goli</strong> CLI in your terminal.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2024 goli CLI. Built for developers, by developers.</p>
+            <p><a href="https://teams.microsoft.com/l/chat/0/0?users=uriya.hadad@sap.com">Contact Us</a></p>
+        </footer>
+    </div>
+
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.dark-mode-toggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        // Enhanced scroll spy functionality
+        function updateActiveNavigation() {
+            const sections = document.querySelectorAll('.section');
+            let currentSection = '';
+            const scrollPosition = window.scrollY + window.innerHeight / 3;
+            if (window.scrollY === 0) {
+                currentSection = sections[0].id; // Mark the first section active at the top of the page
+            } else {
+                sections.forEach((section, index) => {
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+
+                    if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+                        currentSection = section.id;
+                    }
+
+                    if (index === sections.length - 1 && window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+                        currentSection = section.id; // Mark the last section active if near the bottom
+                    }
+                });
+            }
+
+            // Remove active class from all items
+            document.querySelectorAll('.nav-item, .sub-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Add active class to corresponding nav item
+            if (currentSection) {
+                const activeNavItem = document.querySelector(`[data-section="${currentSection}"]`);
+                if (activeNavItem) {
+                    activeNavItem.classList.add('active');
+                }
+            }
+        }
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Update active state on scroll
+        window.addEventListener('scroll', updateActiveNavigation);
+
+        // Initial update
+        updateActiveNavigation();
+    </script>
+</body>
+</html>
