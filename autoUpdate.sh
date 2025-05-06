@@ -19,7 +19,7 @@ trap 'echo "removing lock";rm -f "$LOCKFILE"; exit' EXIT
 # Configuration
 BASE_URL="https://common.repositories.cloud.sap/artifactory/portal/go/plugins/goli/"
 USERNAME="i564168"
-PASSWORD="cmVmdGtuOjAxOjE3NTUwMDU0NjE6bG11dngyWEZINEV5QmVrZUhYZ2k2NHZ6Q3NK"
+PASSWORD="****************"
 VERSION_FILE="version.txt"
 LATEST_VERSION_FILE="latest_version.txt"
 OUTPUT_FILE="Goli-latest-version.zip"
