@@ -1,11 +1,6 @@
 # GOLI-CLI
 
 
-[![Build Status](https://github.wdf.sap.corp/Portal-CF/Goli-Cli/actions/workflows/releaseCreation%20.yml/badge.svg)](https://github.wdf.sap.corp/Portal-CF/Goli-Cli/actions)
-
-<img width="1331" alt="Screenshot 2024-08-14 at 13 46 50" src="https://github.wdf.sap.corp/storage/user/109094/files/90ed70d3-c46b-482d-928b-bf57ebf65eb9">
-
-
 `goli` is a command-line interface (CLI) tool designed for managing and interacting with applications and instances on the CF landscape.
 
 This README provides an overview of the tool, its commands.
