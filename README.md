@@ -35,6 +35,12 @@ Goli provides a rich set of commands to:
 - View logs and app status
 - Automate workflows with interactive support
 
+### Examples
+![goli-query](https://github.com/user-attachments/assets/a2cbca8d-3351-4ca1-9fd0-5e49bd2b05b0)
+![goli-open-DB](https://github.com/user-attachments/assets/3d33cb67-58f8-4c84-93fe-5f589de5e27a)
+![goli-gen-key-interactive](https://github.com/user-attachments/assets/ab4ac02e-42b3-42f9-a260-fc8c9a4db98e)
+![goli-gen-key-new](https://github.com/user-attachments/assets/32cd5f8c-443c-4d47-98d2-8c2e672b8e90)
+
 ## Documentation
 
 All usage instructions, command references, and advanced options are available in the official documentation:
